@@ -8,14 +8,15 @@ import { Order, Option, SingleOperator, MultiOperator, OrOperator, Row, BasicTyp
 import { ORDER, LIMIT, WHRER, AND, PLACEHOLDER } from './constant';
 
 // column handler for select
-export const getColumns = (columns: string[] | undefined) => (!columns?.length ? '*' : columns.join(', '));
+export const getColumns = (columns: string[] | undefined) =>
+  !columns?.length ? '*' : columns.map(i => `\`${i}\``).join(', ');
 
 export const getOrder = (order: Order | undefined) => {
   if (order === void 0 || !Object.keys(order).length) {
     return '';
   } else {
     return Object.keys(order)
-      .reduce((res: string, item: string) => res + ` ${item} ${order[item].toUpperCase()},`, ` ${ORDER}`)
+      .reduce((res: string, item: string) => res + ` \`${item}\` ${order[item].toUpperCase()},`, ` ${ORDER}`)
       .replace(/,$/, '');
   }
 };
@@ -99,7 +100,7 @@ export const getColAndVals = (value: Row | Row[]) => {
   if (Array.isArray(value)) {
     checkEmptyArray('insert', value);
     const keyArr = Object.keys(value[0]);
-    const columnStr = '(' + keyArr.join(', ') + ')';
+    const columnStr = '(' + keyArr.map(i => `\`${i}\``).join(', ') + ')';
     let valStr = '';
     const valArr: BasicType[] = [];
     for (let i = 0; i < value.length; i++) {
@@ -116,7 +117,7 @@ export const getColAndVals = (value: Row | Row[]) => {
   } else {
     checkEmptyPlainObject('insert', value);
     const keyArr = Object.keys(value);
-    const columnStr = '(' + keyArr.join(', ') + ')';
+    const columnStr = '(' + keyArr.map(i => `\`${i}\``).join(', ') + ')';
     const placeholders = Array(keyArr.length).fill(PLACEHOLDER);
     const valArr = Object.values(value);
     const valStr = '(' + placeholders.join(', ') + ')';
@@ -128,6 +129,8 @@ export const getColAndVals = (value: Row | Row[]) => {
 export const getSet = (value: Row) => {
   checkEmptyPlainObject('update', value);
   const keyArr = Object.keys(value);
-  const setStr = keyArr.reduce((res: string, key: string) => res + `${key} = ${PLACEHOLDER}, `, '').replace(/,\s$/, '');
+  const setStr = keyArr
+    .reduce((res: string, key: string) => res + `\`${key}\` = ${PLACEHOLDER}, `, '')
+    .replace(/,\s$/, '');
   return { setStr, setVal: Object.values(value) };
 };

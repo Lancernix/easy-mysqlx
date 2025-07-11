@@ -54,7 +54,7 @@ export default class Query {
     // where & optionValues
     const { str: whereStr, arr: optionValues } = getWhere(where);
     // prepared statement
-    const sql = `${SELECT} ${columnStr} ${FROM} ${table}${whereStr}${orderStr}${limitStr};`;
+    const sql = `${SELECT} ${columnStr} ${FROM} \`${table}\`${whereStr}${orderStr}${limitStr};`;
     const reslut = await this._query(sql, optionValues);
     return reslut as RowDataPacket[];
   }
@@ -71,7 +71,7 @@ export default class Query {
     // optionValues
     const optionValues = getWhere(where).arr;
     // prepared statement
-    const sql = `${SELECT} ${COUNT} ${FROM} ${table}${whereStr};`;
+    const sql = `${SELECT} ${COUNT} ${FROM} \`${table}\`${whereStr};`;
     const result = await this._query(sql, optionValues);
     return (result as RowDataPacket[])[0][`${COUNT}`];
   }
@@ -84,7 +84,7 @@ export default class Query {
   async insert(params: InsertParams): Promise<OkPacket> {
     const { table, value } = params;
     const { columnStr, valStr, valArr } = getColAndVals(value);
-    const sql = `${INSERT} ${INTO} ${table} ${columnStr} ${VALUES} ${valStr};`;
+    const sql = `${INSERT} ${INTO} \`${table}\` ${columnStr} ${VALUES} ${valStr};`;
     const result = await this._query(sql, valArr);
     return result as OkPacket;
   }
@@ -98,7 +98,7 @@ export default class Query {
     const { table, value, where } = params;
     const { setStr, setVal } = getSet(value);
     const { str: whereStr, arr: optionValues } = getWhere(where);
-    const sql = `${UPDATE} ${table} ${SET} ${setStr}${whereStr};`;
+    const sql = `${UPDATE} \`${table}\` ${SET} ${setStr}${whereStr};`;
     const valArr = [...setVal, ...optionValues];
     const result = await this._query(sql, valArr);
     return result as OkPacket;
@@ -112,7 +112,7 @@ export default class Query {
   async delete(params: CountAndDelParams): Promise<OkPacket> {
     const { table, where } = params;
     const { str: whereStr, arr: optionValues } = getWhere(where);
-    const sql = `${DELETE} ${FROM} ${table}${whereStr};`;
+    const sql = `${DELETE} ${FROM} \`${table}\`${whereStr};`;
     const result = await this._query(sql, optionValues);
     return result as OkPacket;
   }
@@ -135,7 +135,7 @@ export default class Query {
     // where & optionValues
     const { str: whereStr, arr: optionValues } = getWhere(where);
     // prepared statement
-    const sql = `${SELECT} ${columnStr} ${FROM} ${table}${whereStr}${orderStr}${limitStr};`;
+    const sql = `${SELECT} ${columnStr} ${FROM} \`${table}\`${whereStr}${orderStr}${limitStr};`;
     const result = await this._query(sql, optionValues);
     return (result as RowDataPacket[])[0];
   }

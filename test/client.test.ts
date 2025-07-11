@@ -6,7 +6,7 @@ const client = new Client({
   host: 'localhost',
   port: 3306,
   database: 'test',
-  user: 'local',
+  user: 'root',
   password: '123456',
   charset: 'UTF8MB4_GENERAL_CI',
 });
@@ -35,12 +35,15 @@ it('table data init', async () => {
 
 // ****** query test start ******
 it('async query without placeholders', async () => {
-  const result = await client.query(`SELECT name, age FROM ${TABLE} WHERE name = 'tom';`);
+  const result = await client.query(`SELECT \`name\`, \`age\` FROM \`${TABLE}\` WHERE \`name\` = 'tom';`);
   expect(result).toEqual([{ name: 'tom', age: 17 }]);
 });
 
 it('simple async query with placeholders', async () => {
-  const result = await client.query(`SELECT name, age FROM ${TABLE} WHERE age >= ? AND status = ?;`, [55, 1]);
+  const result = await client.query(
+    `SELECT \`name\`, \`age\` FROM \`${TABLE}\` WHERE \`age\` >= ? AND \`status\` = ?;`,
+    [55, 1],
+  );
   expect(result).toEqual([{ name: 'yasuo', age: 77 }]);
 });
 // ****** query test end ******

@@ -25,8 +25,8 @@ const commonOpFunc = (op: SingleOperator, val: SingleOptionValue): OpFuncRet => 
       const key = keyArr[i];
       optionStr +=
         i === keyArr.length - 1
-          ? `${key} ${Operator[op]} ${PLACEHOLDER}`
-          : `${key} ${Operator[op]} ${PLACEHOLDER} ${AND} `;
+          ? `\`${key}\` ${Operator[op]} ${PLACEHOLDER}`
+          : `\`${key}\` ${Operator[op]} ${PLACEHOLDER} ${AND} `;
       values.push(val[key]);
     }
   }
@@ -45,8 +45,8 @@ const bwOpFunc = (op: MultiOperator, val: MultiOptionValue): OpFuncRet => {
       checkTwoElementArray(key, val[key]);
       optionStr +=
         i === keyArr.length - 1
-          ? `${key} ${Operator[op]} ${PLACEHOLDER} ${AND} ${PLACEHOLDER}`
-          : `${key} ${Operator[op]} ${PLACEHOLDER} ${AND} ${PLACEHOLDER} ${AND} `;
+          ? `\`${key}\` ${Operator[op]} ${PLACEHOLDER} ${AND} ${PLACEHOLDER}`
+          : `\`${key}\` ${Operator[op]} ${PLACEHOLDER} ${AND} ${PLACEHOLDER} ${AND} `;
       values.push(...val[key]);
     }
   }
@@ -68,8 +68,8 @@ const inAndNiOpFunc = (op: MultiOperator, val: MultiOptionValue): OpFuncRet => {
       checkEmptyArray(key, val[key]);
       optionStr +=
         i === keyArr.length - 1
-          ? `${key} ${Operator[op]} (${composePlaceholder(val[key])})`
-          : `${key} ${Operator[op]} (${composePlaceholder(val[key])}) ${AND} `;
+          ? `\`${key}\` ${Operator[op]} (${composePlaceholder(val[key])})`
+          : `\`${key}\` ${Operator[op]} (${composePlaceholder(val[key])}) ${AND} `;
       values.push(...val[key]);
     }
   }
