@@ -1,6 +1,6 @@
 {
   "name": "easy-mysqlx",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "fast CURD api tools based node-mysql2",
   "main": "lib/index.js",
   "types": "lib/typing/index.d.ts",
